@@ -1,18 +1,37 @@
 import * as F from '../src/adt';
+import C from '../src/constants';
 
 describe('match', () => {
   test('calls the matched function', () => {
     const instance = {
-      value: 1,
-      type: 'Just'
+      [C.value]: 1,
+      [C.type]: 'Just',
+      [C.keys]: ['Just', 'Nothing']
+    }
+    const pattern = {
+      Just: jest.fn((val) => val),
+      Nothing: () => {}
+    }
+    const result = F.match(pattern)(instance)
+
+    expect(result).toBe(1)
+    expect(pattern.Just.mock.calls[0][0]).toBe(1)
+  })
+  test('warns if missing keys', () => {
+    global.console = {
+      warn: jest.fn()
+    }
+    const instance = {
+      [C.value]: 1,
+      [C.type]: 'Just',
+      [C.keys]: ['Just', 'Nothing']
     }
     const pattern = {
       Just: jest.fn((val) => val)
     }
     const result = F.match(pattern)(instance)
 
-    expect(result).toBe(1)
-    expect(pattern.Just.mock.calls[0][0]).toBe(1)
+    expect(console.warn).toBeCalled()
   })
 })
 
@@ -24,18 +43,39 @@ describe('union', () => {
     })
     const just = maybe.Just(1)
     const justExpected = {
-      value: 1,
-      keys: ['Just', 'Nothing'],
-      type: 'Just'
+      [C.value]: 1,
+      [C.keys]: ['Just', 'Nothing'],
+      [C.type]: 'Just'
     }
     const nothing = maybe.Nothing()
     const nothingExpected = {
-      value: null,
-      keys: ['Just', 'Nothing'],
-      type: 'Nothing'
+      [C.value]: null,
+      [C.keys]: ['Just', 'Nothing'],
+      [C.type]: 'Nothing'
     }
     expect(just).toEqual(justExpected)
     expect(nothing).toEqual(nothingExpected)
+  })
+})
+
+describe('isMember', () => {
+  test('true', () => {
+    const instance = {
+      [C.value]: 1,
+      [C.type]: 'Just',
+      [C.keys]: ['Just', 'Nothing']
+    }
+    const result = F.isMember('Just')(instance)
+    expect(result).toBe(true)
+  })
+  test('false', () => {
+    const instance = {
+      [C.value]: 1,
+      [C.type]: 'Just',
+      [C.keys]: ['Just', 'Nothing']
+    }
+    const result = F.isMember('Nothing')(instance)
+    expect(result).toBe(false)
   })
 })
 

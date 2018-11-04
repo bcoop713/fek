@@ -1,11 +1,12 @@
-import {Ok, Error, fromResult, toResult} from '../src/result';
+import {Ok, Error, fromResult, toResult, collectError, mapOk} from '../src/result';
+import C from '../src/constants';
 
 test('Ok', () => {
   const okStructure = Ok(1);
   const expectedStructure = {
-    value: 1,
-    keys: ['Ok', 'Error'],
-    type: 'Ok'
+    [C.value]: 1,
+    [C.keys]: ['Ok', 'Error'],
+    [C.type]: 'Ok'
   }
   expect(okStructure).toEqual(expectedStructure)
 })
@@ -13,9 +14,9 @@ test('Ok', () => {
 test('Error', () => {
   const errorStructure = Error("ERROR");
   const expectedStructure = {
-    value: "ERROR",
-    keys: ['Ok', 'Error'],
-    type: 'Error'
+    [C.value]: "ERROR",
+    [C.keys]: ['Ok', 'Error'],
+    [C.type]: 'Error'
   }
   expect(errorStructure).toEqual(expectedStructure)
 })
@@ -48,5 +49,34 @@ describe('fromResult', () => {
     const r = Error()
     const result = fromResult(r)(0)
     expect(result).toBe(0)
+  })
+})
+
+describe('collectError', () => {
+  test('all Ok', () => {
+    const results = [1, 2, 3, 4].map(val => Ok(val))
+    const result = collectError(results)
+    expect(result).toEqual(Ok(4))
+  })
+  test('all Error', () => {
+    const results = [[1], [2], [3]].map(val => Error(val))
+    const result = collectError(results)
+    expect(result).toEqual(Error([1, 2, 3]))
+  })
+})
+
+describe('mapOk', () => {
+  test('ok', () => {
+    const ok = Ok(1)
+    const result = mapOk((r) => r + 1)(ok)
+
+    const expected = Ok(2)
+    expect(result).toEqual(expected)
+  })
+  test('error', () => {
+    const error = Error("Error")
+    const result = mapOk((r) => r + 1)(error)
+
+    expect(result).toEqual(error)
   })
 })
