@@ -1,4 +1,4 @@
-import {Ok, Error, fromResult, toResult, collectError, mapOk} from '../src/result';
+import {Ok, Error, fromResult, toResult, collectError, mapOk, mapError} from '../src/result';
 import C from '../src/constants';
 
 test('Ok', () => {
@@ -78,5 +78,21 @@ describe('mapOk', () => {
     const result = mapOk((r) => r + 1)(error)
 
     expect(result).toEqual(error)
+  })
+})
+
+describe('mapError', () => {
+  test('ok', () => {
+    const ok = Ok(1)
+    const result = mapError((r) => r + 1)(ok)
+
+    const expected = Ok(1)
+    expect(result).toEqual(expected)
+  })
+  test('error', () => {
+    const error = Error(1)
+    const result = mapError((r) => r + 1)(error)
+
+    expect(result).toEqual(Error(2))
   })
 })

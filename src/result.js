@@ -41,3 +41,10 @@ export const mapOk = (fn) => (result) => {
     Error: (error) => Error(error)
   })(result)
 }
+
+export const mapError = (fn) => (result) => {
+  return match({
+    Ok: (val) => Ok(val),
+    Error: (error) => Error(fn(error))
+  })(result)
+}
