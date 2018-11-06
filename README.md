@@ -1,2 +1,7 @@
-# fek
-It's not feckless
+# Fek
+
+To Do
+ - Ramda Functions
+ - Folktale Functions
+ - Documentation
+ - Remove Dependencies
