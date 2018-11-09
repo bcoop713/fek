@@ -42,12 +42,12 @@ describe('toMaybe', () => {
 describe('fromMaybe', () => {
   test('from Just', () => {
     const maybe = Just(3);
-    const result = fromMaybe(maybe)(0);
+    const result = fromMaybe(0)(maybe);
     expect(result).toBe(3);
   });
   test('from Nothing', () => {
     const maybe = Nothing();
-    const result = fromMaybe(maybe)(0);
+    const result = fromMaybe(0)(maybe);
     expect(result).toBe(0);
   });
 });
