@@ -1,7 +1,7 @@
 import { union, match, isMember } from './adt';
 import C from './constants';
 import { cond } from './util';
-import R from 'ramda';
+import * as R from 'ramda';
 
 const Result = union({
   Ok: val => val,

@@ -19,7 +19,7 @@ describe('match', () => {
   });
   test('warns if missing keys', () => {
     global.console = {
-      warn: jest.fn()
+      warn: jest.fn(),
     };
     const instance = {
       [C.value]: 1,
@@ -32,6 +32,21 @@ describe('match', () => {
     const result = F.match(pattern)(instance);
 
     expect(console.warn).toBeCalled();
+  });
+  test('calls default if no match', () => {
+    const instance = {
+      [C.value]: 1,
+      [C.type]: 'OtherKey',
+      [C.keys]: ['Just', 'Nothing']
+    };
+    const pattern = {
+      Just: jest.fn(val => val),
+      Default: jest.fn(val => val)
+    };
+    const result = F.match(pattern)(instance);
+
+    expect(result).toBe(1);
+    expect(pattern.Default.mock.calls[0][0]).toBe(1);
   });
 });
 

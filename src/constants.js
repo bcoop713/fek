@@ -1,5 +1,5 @@
 export default {
-  type: '@@FekType',
+  type: 'type',
   value: '@@FekValue',
   keys: '@@FekKeys'
 };

@@ -1,7 +1,7 @@
 import { Ok, Error, collectError, mapOk, mapError } from './result';
 import { Just, Nothing, fromMaybe } from './maybe';
 import { match, union, isMember } from './adt';
-import R from 'ramda';
+import * as R from 'ramda';
 import is from 'is_js';
 
 const Validator = union({

@@ -43,3 +43,7 @@ export const find = (fn) => (data) => {
     Nothing: () => Nothing()
   })(h)
 }
+
+export const update = (key) => (fn) => (obj) => {
+  return Object.assign({}, obj, {[key]: fn(obj[key])})
+}

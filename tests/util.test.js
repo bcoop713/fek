@@ -74,3 +74,12 @@ describe('find', () => {
     expect(result).toEqual(Nothing())
   })
 })
+
+describe('update', () => {
+  test('should call the fn with key and return new obj', () => {
+    const obj = {counter: 0};
+    const updateFn = jest.fn((val) => val + 1)
+    const result = U.update('counter')(updateFn)(obj)
+    expect({counter: 1}).toEqual(result)
+  })
+})

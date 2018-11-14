@@ -1,12 +1,18 @@
 import C from './constants';
-import R from 'ramda';
+import * as R from 'ramda';
 
 export const match = pattern => instance => {
-  const missingKeys = R.difference(instance[C.keys], R.keys(pattern));
+  const missingKeys = R.difference(instance[C.keys] || [], R.keys(pattern) || []);
   if (missingKeys.length !== 0) {
     console.warn(`Missing Matches: ${missingKeys}`);
   }
-  return pattern[instance[C.type]](instance[C.value]);
+  if (pattern[instance[C.type]]) {
+    return pattern[instance[C.type]](instance[C.value]);
+  } else if(pattern.Default) {
+    return pattern.Default(instance[C.value]);
+  } else (
+    console.error('No Match Found for', {pattern, instance})
+  )
 };
 
 export const union = constructor => {
