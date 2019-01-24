@@ -1,5 +1,5 @@
 import * as F from '../src/obj'
-import * as R from '../src/result'
+import * as M from '../src/maybe'
 
 test('clone', () => {
   const obj = {a: '1'}
@@ -66,13 +66,13 @@ describe('get', () => {
     const obj = {a: '1', b: '2'}
 
     const result = F.get('a')(obj)
-    expect(result).toEqual(R.Ok('1'))
+    expect(result).toEqual(M.Just('1'))
   })
   test('should return error if key doesnt exist', () => {
     const obj = {a: '1', b: '2'}
     const result = F.get('c')(obj)
 
-    expect(result).toEqual(R.Error())
+    expect(result).toEqual(M.Nothing())
   })
 })
 
@@ -130,5 +130,20 @@ describe('update$', () => {
     const obj = {counter: 0};
     const updateFn = jest.fn((val) => val + 1)
     expect(() => F.update$('a')(updateFn)(obj)).toThrow()
+  })
+})
+
+describe('updateWithDefault', () => {
+  test('should call the fn with key and return new obj', () => {
+    const obj = {counter: 0};
+    const updateFn = jest.fn((val) => val + 1)
+    const result = F.updateWithDefault('counter')(updateFn)(0)(obj)
+    expect({counter: 1}).toEqual(result)
+  })
+  test('should use default if key doesnt exist', () => {
+    const obj = {counter: 0};
+    const updateFn = jest.fn((val) => val + 1)
+    const result = F.updateWithDefault('counter')(updateFn)(1)(obj)
+    expect({counter: 2}).toEqual(result)
   })
 })
