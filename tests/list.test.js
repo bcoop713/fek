@@ -24,17 +24,22 @@ describe('removeAt', () => {
     const result = L.removeAt(3)(data)
     expect(result).toEqual([1, 2, 3])
   })
+  test('negative index out of range', () => {
+    const data = [1, 2, 3];
+    const result = L.removeAt(-4)(data)
+    expect(result).toEqual([1, 2, 3])
+  })
 })
 
-describe('first', () => {
-  test('has first', () => {
+describe('head', () => {
+  test('has head', () => {
     const data = [1, 2, 3];
-    const result = L.first(data)
+    const result = L.head(data)
     expect(result).toEqual(Just(1))
   })
   test('empty list', () => {
     const data = [];
-    const result = L.first(data)
+    const result = L.head(data)
     expect(result).toEqual(Nothing())
   })
 })
@@ -74,3 +79,38 @@ describe('insertAt', () => {
   })
 })
 
+describe('last', () => {
+  test('has last', () => {
+    const data = [1, 2, 3];
+    const result = L.last(data)
+    expect(result).toEqual(Just(3))
+  })
+  test('empty list', () => {
+    const data = [];
+    const result = L.last(data)
+    expect(result).toEqual(Nothing())
+  })
+})
+
+describe('popAt', () => {
+  test('index exists', () => {
+    const data = [1, 2, 3];
+    const result = L.popAt(1)(data)
+    expect(result).toEqual([Just(2), [1, 3]])
+  })
+  test('index is negative', () => {
+    const data = [1, 2, 3];
+    const result = L.popAt(-1)(data)
+    expect(result).toEqual([Just(3), [1, 2]])
+  })
+  test('positive index out of range', () => {
+    const data = [1, 2, 3];
+    const result = L.popAt(10)(data)
+    expect(result).toEqual([Nothing(), [1, 2, 3]])
+  })
+  test('negative index out of range', () => {
+    const data = [1, 2, 3];
+    const result = L.popAt(-10)(data)
+    expect(result).toEqual([Nothing(), [1, 2, 3]])
+  })
+})
