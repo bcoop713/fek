@@ -114,3 +114,53 @@ describe('popAt', () => {
     expect(result).toEqual([Nothing(), [1, 2, 3]])
   })
 })
+
+describe('all', () => {
+  test('returns true', () => {
+    const data = [1, 2, 3]
+    const result = L.all(num => num > 0)(data)
+    expect(result).toEqual(true)
+  })
+  test('returns false', () => {
+    const data = [1, -2, 3]
+    const result = L.all(num => num > 0)(data)
+    expect(result).toEqual(false)
+  })
+})
+
+describe('any', () => {
+  test('returns true', () => {
+    const data = [1, -2, 3]
+    const result = L.any(num => num > 0)(data)
+    expect(result).toEqual(true)
+  })
+  test('returns false', () => {
+    const data = [-1, -2, -3]
+    const result = L.any(num => num > 0)(data)
+    expect(result).toEqual(false)
+  })
+})
+
+describe('at', () => {
+  test('item exists', () => {
+    const data = [1, 2, 3]
+    const result = L.at(1)(data)
+    expect(result).toEqual(Just(2))
+  })
+  test('item exists negative index', () => {
+    const data = [1, 2, 3]
+    const result = L.at(-1)(data)
+    expect(result).toEqual(Just(3))
+  })
+  test('item doesnt exists', () => {
+    const data = [1, 2, 3]
+    const result = L.at(5)(data)
+    expect(result).toEqual(Nothing())
+  })
+})
+
+test('chuckBy', () => {
+  const data = [1, 2, 2, 3, 4, 4, 6,  7, 7]
+  const result = L.chunkBy((val) => val % 2 === 1)(data)
+  expect(result).toEqual([[1], [2, 2], [3], [4, 4, 6], [7, 7]])
+})
