@@ -164,3 +164,27 @@ test('chuckBy', () => {
   const result = L.chunkBy((val) => val % 2 === 1)(data)
   expect(result).toEqual([[1], [2, 2], [3], [4, 4, 6], [7, 7]])
 })
+
+test('chunkEvery', () => {
+  const data = [1, 2, 2, 3, 4, 4, 6, 7]
+  const result = L.chunkEvery(3)(data)
+  expect(result).toEqual([[1, 2, 2], [3, 4, 4], [6, 7]])
+})
+
+test('concat', () => {
+  expect(L.concat([1, 2])([3, 4])).toEqual([1, 2, 3, 4])
+})
+
+test('count', () => {
+  expect(L.count([1, 2])).toBe(2)
+})
+
+test('dedup', () => {
+  expect(L.dedup([1, 2, 2, 3, 1])).toEqual([1, 2, 3, 1])
+})
+
+test('dedupBy', () => {
+  const data = [1, -1, 2, 3]
+  const result = L.dedupBy((a, b) => Math.abs(a) === Math.abs(b))(data)
+  expect(result).toEqual([1, 2, 3])
+})

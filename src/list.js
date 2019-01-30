@@ -74,3 +74,13 @@ export const chunkBy = fn => list => {
     }
   }, {final: [], lastResult: init}).final
 }
+
+export const chunkEvery = count => list => R.splitEvery(count, list)
+
+export const concat = list1 => list2 => [...list1, ...list2]
+
+export const count = list => list.length
+
+export const dedup = list => R.dropRepeats(list)
+
+export const dedupBy = fn => list => R.dropRepeatsWith(fn, list)
